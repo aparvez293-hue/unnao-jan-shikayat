@@ -1,0 +1,70 @@
+UNNAO JAN SHIKAYAT — ANDROID SETUP (Hindi)
+==============================================
+
+Is ZIP mein website ka starter code hai. Website ko public karne se pehle neeche ke steps poore karein. Abhi tracking feature jaan-boojhkar disabled hai; private complaints ko public banana safe nahi hai.
+
+A. GitHub account aur website hosting
+-------------------------------------
+1. Android Chrome mein https://github.com/ kholein.
+2. Sign up karein, email verify karein, aur strong password + 2-factor authentication enable karein.
+3. Login ke baad + > New repository par tap karein.
+4. Repository name: unnao-jan-shikayat
+5. Public select karein, phir Create repository.
+6. Repository page par Add file > Upload files kholein.
+7. ZIP ko pehle phone ke Files app mein extract karein. Extracted folder ke ANDAR ki files (index.html, style.css, app.js, supabase-setup.sql, SETUP-HI.txt) upload karein; poora ZIP upload na karein.
+8. Commit changes tap karein.
+
+B. Supabase database banana
+---------------------------
+1. https://supabase.com/ par account banayein, New project select karein.
+2. Project ka naam: unnao-jan-shikayat. Database password ko safe jagah rakhein; ise website par publish na karein.
+3. Project banne ke baad Dashboard > SQL Editor > New query kholein.
+4. ZIP ke supabase-setup.sql ko text editor se kholkar poora SQL copy karein; SQL Editor mein paste karke Run karein.
+5. Dashboard > Authentication > Sign In / Providers mein Email login enable rakhein.
+6. Authentication > Users mein apne liye admin user create karein. Public sign-ups/registrations ko disabled rakhein. Admin password strong aur unique ho.
+7. Project Settings > API (ya Connect/API Keys, dashboard ke current layout ke hisaab se) se Project URL aur publishable/anon key copy karein. `service_role` ya secret key kabhi copy/publish na karein.
+
+C. Website ko database se connect karna
+---------------------------------------
+1. GitHub repository mein app.js file kholein.
+2. Pencil/Edit icon tap karein.
+3. In do lines ko apne Supabase values se badlein:
+   const SUPABASE_URL = "PASTE_YOUR_SUPABASE_PROJECT_URL_HERE";
+   const SUPABASE_ANON_KEY = "PASTE_YOUR_SUPABASE_PUBLISHABLE_OR_ANON_KEY_HERE";
+4. Publishable/anon key public browser mein use ho sakti hai ONLY because SQL/RLS policies access ko restrict karti hain. Secret/service_role key yahan kabhi na daalein.
+5. Commit changes karein.
+
+D. GitHub Pages on karna
+------------------------
+1. Repository > Settings > Pages.
+2. Build and deployment mein "Deploy from a branch" select karein.
+3. Branch: main; folder: /(root); Save.
+4. Kuch minute wait karein. Pages section mein website URL milega, aam taur par:
+   https://YOUR-GITHUB-USERNAME.github.io/unnao-jan-shikayat/
+5. URL kholkar form check karein. Test ke liye fake test data use karein, kisi real vyakti ka phone number nahi.
+6. Admin dashboard ke liye website ke neeche "Admin dashboard" kholein aur Supabase mein banaye email/password se login karein.
+
+E. QR Code
+----------
+Website ka published URL copy karein. Use kisi trusted QR generator mein daal kar QR banayein, phir apne phone se scan karke test karein. QR code sirf website URL ka ho, admin link/password ka nahi.
+
+F. Complaint forwarding kaise hoga
+----------------------------------
+Admin dashboard mein complaint ke saamne "Prepare email to office" tap karein. Email app khulega aur complaint ka draft banega. Recipient field mein sirf verified official email daalein. Email address verify kiye bina complaint na bhejein. Abhi automatic forwarding nahi hai.
+
+G. Zaroori safety / production checklist
+----------------------------------------
+- Website ko government website na batayein; independent public-help portal clearly likha hai.
+- Public ko complaints ki list ya personal data na dikhayein.
+- Public tracking abhi disabled hai. Use tabhi enable karein jab secure server-side/Edge Function sirf tracking ID aur status return kare; naam, phone, complaint text nahi.
+- Admin dashboard ka link public site par dikh raha hai, lekin login required hai. Is starter mein single-admin assumption hai; public sign-up disabled rakhein. Production mein admin allowlist / role-based policy aur rate limiting add karein.
+- Phone number aur complaint text personal data hai. Privacy notice, retention/deletion process, spam protection (CAPTCHA/Turnstile), backups aur abuse controls add karein.
+- Official municipal contact details verify karein. This portal is not affiliated with a government body and does not guarantee official action.
+- Free hosting/database plans can have limits, change terms, or pause inactive projects; review provider terms.
+- Public submission is intentionally insert-only. If the SQL policy or browser console reports a permission error, do not weaken RLS or expose a secret key. Review the policy and grants.
+
+Suggested next upgrade:
+1. Secure public tracking via Edge Function.
+2. CAPTCHA / rate limiting.
+3. Admin allowlist policy tied to your specific admin user ID.
+4. Official recipient directory after verifying each office's contact channel.

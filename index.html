@@ -1,0 +1,85 @@
+<!doctype html>
+<html lang="hi">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#101820">
+  <title>Unnao Jan Shikayat | जन शिकायत</title>
+  <meta name="description" content="Unnao Jan Shikayat - नागरिक अपनी स्थानीय समस्याएँ दर्ज करें।">
+  <link rel="stylesheet" href="style.css">
+  <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+</head>
+<body>
+  <header class="hero">
+    <div class="brand-mark" aria-hidden="true">उ</div>
+    <div>
+      <p class="eyebrow">CITIZEN COMPLAINT PORTAL</p>
+      <h1>Unnao Jan Shikayat</h1>
+      <p class="subtitle">आपकी आवाज़, आपके शहर का सुधार</p>
+    </div>
+    <button id="langToggle" class="lang-button" type="button">English</button>
+  </header>
+
+  <main>
+    <section class="intro">
+      <h2 data-hi="अपनी समस्या दर्ज करें" data-en="Register your complaint">अपनी समस्या दर्ज करें</h2>
+      <p data-hi="सड़क, नाली, सफाई, स्ट्रीट लाइट और अन्य स्थानीय समस्याओं की जानकारी दें। आपकी शिकायत पहले पोर्टल एडमिन द्वारा जाँची जाएगी।" data-en="Report road, drain, sanitation, streetlight and other local issues. Complaints are reviewed by the portal admin first.">सड़क, नाली, सफाई, स्ट्रीट लाइट और अन्य स्थानीय समस्याओं की जानकारी दें। आपकी शिकायत पहले पोर्टल एडमिन द्वारा जाँची जाएगी।</p>
+      <div class="notice"><strong data-hi="महत्वपूर्ण:" data-en="Important:">महत्वपूर्ण:</strong> <span data-hi="यह स्वतंत्र नागरिक शिकायत पोर्टल है; यह सरकारी वेबसाइट नहीं है। शिकायत भेजना सरकारी कार्रवाई की गारंटी नहीं है।" data-en="This is an independent citizen complaint portal, not an official government website. Submission does not guarantee government action.">यह स्वतंत्र नागरिक शिकायत पोर्टल है; यह सरकारी वेबसाइट नहीं है। शिकायत भेजना सरकारी कार्रवाई की गारंटी नहीं है।</span></div>
+    </section>
+
+    <section class="panel">
+      <h2 data-hi="शिकायत फॉर्म" data-en="Complaint form">शिकायत फॉर्म</h2>
+      <form id="complaintForm">
+        <label><span data-hi="पूरा नाम *" data-en="Full name *">पूरा नाम *</span><input name="name" maxlength="100" required autocomplete="name"></label>
+        <label><span data-hi="मोबाइल नंबर *" data-en="Mobile number *">मोबाइल नंबर *</span><input name="phone" type="tel" inputmode="numeric" pattern="[0-9+\-\s]{10,16}" maxlength="16" required autocomplete="tel" placeholder="10 digit mobile number"></label>
+        <label><span data-hi="शिकायत की श्रेणी *" data-en="Complaint category *">शिकायत की श्रेणी *</span>
+          <select name="category" required>
+            <option value="">श्रेणी चुनें / Select category</option>
+            <option>सड़क / Road</option><option>नाली / Drainage</option><option>सफाई / Sanitation</option>
+            <option>स्ट्रीट लाइट / Streetlight</option><option>पानी / Water</option><option>कचरा / Garbage</option>
+            <option>अन्य / Other</option>
+          </select>
+        </label>
+        <label><span data-hi="वार्ड / मोहल्ला *" data-en="Ward / locality *">वार्ड / मोहल्ला *</span><input name="locality" maxlength="150" required></label>
+        <label><span data-hi="समस्या का स्थान (यदि अलग हो)" data-en="Specific location (if different)">समस्या का स्थान (यदि अलग हो)</span><input name="location" maxlength="250" placeholder="गली, लैंडमार्क / street, landmark"></label>
+        <label><span data-hi="अपनी शिकायत लिखें *" data-en="Describe the issue *">अपनी शिकायत लिखें *</span><textarea name="details" rows="5" maxlength="3000" required placeholder="क्या समस्या है और कहाँ है?"></textarea></label>
+        <label class="consent"><input type="checkbox" name="consent" required><span data-hi="मैं सहमत हूँ कि मेरी जानकारी शिकायत की समीक्षा और संबंधित कार्यालय को भेजने के लिए उपयोग की जा सकती है।" data-en="I agree that my details may be used to review and forward this complaint to the relevant office.">मैं सहमत हूँ कि मेरी जानकारी शिकायत की समीक्षा और संबंधित कार्यालय को भेजने के लिए उपयोग की जा सकती है।</span></label>
+        <button class="primary" type="submit" data-hi="शिकायत जमा करें" data-en="Submit complaint">शिकायत जमा करें</button>
+        <p id="formMessage" class="message" role="status" aria-live="polite"></p>
+      </form>
+    </section>
+
+    <section class="panel tracking">
+      <h2 data-hi="शिकायत की स्थिति देखें" data-en="Track a complaint">शिकायत की स्थिति देखें</h2>
+      <p data-hi="अपनी मिली हुई शिकायत ID डालें। यह सुविधा चालू करने के लिए नीचे दिए गए सेटअप निर्देशों में सुरक्षित tracking function configure करना होगा।" data-en="Enter your complaint ID. Secure public tracking must be configured as described in SETUP-HI.txt before this feature can be enabled.">अपनी मिली हुई शिकायत ID डालें। यह सुविधा चालू करने के लिए नीचे दिए गए सेटअप निर्देशों में सुरक्षित tracking function configure करना होगा।</p>
+      <form id="trackingForm" class="tracking-form">
+        <input name="trackingCode" placeholder="UJS-XXXXXXXXXX" maxlength="20" required aria-label="Complaint ID">
+        <button type="submit" class="secondary" data-hi="स्थिति देखें" data-en="Check status">स्थिति देखें</button>
+      </form>
+      <p id="trackingMessage" class="message" role="status" aria-live="polite"></p>
+    </section>
+
+    <details class="panel admin">
+      <summary>Admin dashboard / एडमिन लॉगिन</summary>
+      <p class="muted">यह हिस्सा केवल अधिकृत एडमिन के लिए है। Public signup बंद रखें।</p>
+      <form id="loginForm">
+        <label>Email<input name="email" type="email" required autocomplete="username"></label>
+        <label>Password<input name="password" type="password" required autocomplete="current-password"></label>
+        <button class="secondary" type="submit">Admin login</button>
+        <button id="logoutButton" class="quiet" type="button" hidden>Logout</button>
+      </form>
+      <p id="adminMessage" class="message" role="status" aria-live="polite"></p>
+      <div id="adminArea" hidden>
+        <div class="admin-head"><h3>Complaints / शिकायतें</h3><button id="refreshButton" class="quiet" type="button">Refresh</button></div>
+        <div id="complaintsList"></div>
+      </div>
+    </details>
+
+    <footer>
+      <p>Unnao Jan Shikayat · Independent citizen initiative</p>
+      <p class="muted">आपातकालीन स्थिति में इस पोर्टल के बजाय संबंधित आधिकारिक हेल्पलाइन/सेवा का उपयोग करें।</p>
+    </footer>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>
